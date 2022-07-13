@@ -11,7 +11,10 @@
 
 int main(int argc, char *argv[])
 {
-	int i = 0;
+	int k;
+	clock_t begin, end;
+	double time_per_img, time_total = 0;
+	long long int a = 999999999;
 	struct pgm img;
 	DIR *dir;
 	struct dirent *ent;
@@ -28,6 +31,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 			readPGMImage(&img, ent->d_name);
+			begin = clock();
 			int c = 0;
 			int l = 0;
 
@@ -67,6 +71,9 @@ int main(int argc, char *argv[])
 
 			fprintf(pf, "\n");
 			fclose(pf);
+			end = clock();
+			time_per_img = (double)(end - begin) / CLOCKS_PER_SEC;
+			time_total += time_per_img;
 		}
 		closedir(dir);
 	}
